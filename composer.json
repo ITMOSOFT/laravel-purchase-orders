@@ -1,0 +1,39 @@
+{
+  "name": "itmosoft/laravel-purchase-orders",
+  "description": "Purchase order management for Laravel applications, with supplier-linked orders, line items, approvals, and partial goods receiving.",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.3",
+    "illuminate/contracts": "^12.0|^13.0",
+    "illuminate/database": "^12.0|^13.0",
+    "illuminate/support": "^12.0|^13.0",
+    "itmosoft/laravel-suppliers": "^1.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^10.0|^11.0",
+    "phpunit/phpunit": "^11.5|^12.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "ItmoSoft\\PurchaseOrders\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ItmoSoft\\PurchaseOrders\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ItmoSoft\\PurchaseOrders\\PurchaseOrdersServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
