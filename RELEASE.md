@@ -1,27 +1,18 @@
-# Release: v1.0.0
+# Release: v1.0.2
 
 ## Summary
 
-Initial stable release of ITMOSOFT Laravel Purchase Orders.
+Patch release fixing Eloquent's in-memory defaults for new purchase orders.
 
-## Highlights
+## Fixes
 
-- Supplier-linked purchase orders with unique order numbers.
-- Draft, submitted, approved, partially received, completed, and cancelled lifecycle.
-- Item-level quantity, unit cost, tax rate, and calculated totals.
-- Partial and complete receiving with over-receipt protection.
-- Supplier reference, currency, expected delivery date, and notes.
-- Laravel package auto-discovery and configurable models/table names.
-
-## Compatibility
-
-- PHP 8.3+
-- Laravel 12 and 13
-- `itmosoft/laravel-suppliers` ^1.0
+- Set model defaults for `status`, `currency`, `subtotal`, `tax_total`, and `total`.
+- Ensure a newly created order is immediately recognized as `draft` without requiring a database refresh.
+- Add a regression assertion covering both the in-memory and reloaded status.
 
 ## Validation
 
-Run the full test suite and CI matrix before tagging this release:
+Run the full test suite and CI matrix before tagging:
 
 ```bash
 composer install

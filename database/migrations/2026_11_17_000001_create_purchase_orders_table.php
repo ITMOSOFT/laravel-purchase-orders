@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create(config('purchase-orders.tables.purchase_orders', 'purchase_orders'), function (Blueprint $table) {
             $table->id();
-            $table->foreignId('supplier_id')->constrained('suppliers')->restrictOnDelete();
+            $table->foreignId('supplier_id')->constrained(config('itmosoft-suppliers.suppliers_table', 'suppliers'))->restrictOnDelete();
             $table->string('number')->unique();
             $table->string('supplier_reference')->nullable();
             $table->string('status', 32)->default('draft')->index();

@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create(config('purchase-orders.tables.items', 'purchase_order_items'), function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_order_id')->constrained('purchase_orders')->cascadeOnDelete();
+            $table->foreignId('purchase_order_id')->constrained(config('purchase-orders.tables.purchase_orders', 'purchase_orders'))->cascadeOnDelete();
             $table->nullableMorphs('product');
             $table->string('description');
             $table->decimal('quantity', 14, 3);

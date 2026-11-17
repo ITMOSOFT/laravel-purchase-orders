@@ -29,7 +29,7 @@ abstract class TestCase extends Orchestra
 
     protected function defineDatabaseMigrations(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/../vendor/itmosoft/laravel-suppliers/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Fixtures/migrations');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }

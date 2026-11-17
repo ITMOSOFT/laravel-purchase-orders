@@ -9,17 +9,12 @@ use ItmoSoft\Suppliers\Models\Supplier;
 
 class PurchaseOrderTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->artisan('migrate', ['--database' => 'testing']);
-    }
-
     protected function supplier(): Supplier
     {
         return Supplier::create([
             'name' => 'Acme Supplies',
-            'code' => 'ACME',
+            'slug' => 'acme-supplies-'.uniqid(),
+            'code' => 'ACME-'.strtoupper(substr(uniqid(), -6)),
             'status' => 'active',
         ]);
     }
@@ -47,6 +42,7 @@ class PurchaseOrderTest extends TestCase
         $order = $this->orderWithItem();
 
         $this->assertSame(PurchaseOrderStatus::DRAFT->value, $order->status);
+        $this->assertSame(PurchaseOrderStatus::DRAFT->value, $order->fresh()->status);
         $this->assertSame('Acme Supplies', $order->supplier->name);
     }
 

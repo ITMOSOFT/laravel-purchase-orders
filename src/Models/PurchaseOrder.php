@@ -12,6 +12,20 @@ use ItmoSoft\PurchaseOrders\Enums\PurchaseOrderStatus;
 
 class PurchaseOrder extends Model
 {
+    /**
+     * Keep Eloquent's in-memory state aligned with the database defaults.
+     *
+     * Database column defaults are applied by the database after INSERT and
+     * are not automatically hydrated back onto the model instance.
+     */
+    protected $attributes = [
+        'status' => 'draft',
+        'currency' => 'USD',
+        'subtotal' => '0.00',
+        'tax_total' => '0.00',
+        'total' => '0.00',
+    ];
+
     protected $guarded = [];
 
     protected $casts = [
@@ -56,11 +70,13 @@ class PurchaseOrder extends Model
             ])->save();
         }
 
-        return tap($this->forceFill([
+        $this->forceFill([
             'subtotal' => number_format($subtotal, 2, '.', ''),
             'tax_total' => number_format($taxTotal, 2, '.', ''),
             'total' => number_format($subtotal + $taxTotal, 2, '.', ''),
-        ]))->save();
+        ])->save();
+
+        return $this;
     }
 
     public function submit(): static
@@ -71,19 +87,23 @@ class PurchaseOrder extends Model
         }
 
         $this->recalculateTotals();
-        return tap($this->forceFill([
+        $this->forceFill([
             'status' => PurchaseOrderStatus::SUBMITTED->value,
             'submitted_at' => now(),
-        ]))->save();
+        ])->save();
+
+        return $this;
     }
 
     public function approve(): static
     {
         $this->assertStatus(PurchaseOrderStatus::SUBMITTED);
-        return tap($this->forceFill([
+        $this->forceFill([
             'status' => PurchaseOrderStatus::APPROVED->value,
             'approved_at' => now(),
-        ]))->save();
+        ])->save();
+
+        return $this;
     }
 
     public function cancel(?string $reason = null): static
@@ -100,11 +120,13 @@ class PurchaseOrder extends Model
             throw ValidationException::withMessages(['status' => 'A purchase order with received goods cannot be cancelled.']);
         }
 
-        return tap($this->forceFill([
+        $this->forceFill([
             'status' => PurchaseOrderStatus::CANCELLED->value,
             'cancelled_at' => now(),
             'cancellation_reason' => $reason,
-        ]))->save();
+        ])->save();
+
+        return $this;
     }
 
     public function receive(array $lines, mixed $receivedAt = null, ?string $reference = null): PurchaseOrderReceipt
